@@ -4,33 +4,35 @@ import { useAuth } from '../context/AuthContext'
 export default function AutoLoginAdmin({ children }) {
   const { user, login } = useAuth()
   const [loading, setLoading] = useState(!user || user.role !== 'admin')
+  const [error, setError] = useState('')
+
+  const autoLogin = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: 'vijay@creativebirds.com', password: 'vijay123' })
+      })
+      const data = await res.json()
+      if (res.ok && data.user) {
+        login(data.user)
+      } else {
+        setError(data.error || 'Admin auto-login failed')
+      }
+    } catch (err) {
+      setError('Server not reachable. Please make sure the backend is running on port 5000.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (user && user.role === 'admin') {
       setLoading(false)
       return
     }
-
-    const autoLogin = async () => {
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: 'vijay@creativebirds.com', password: 'vijay123' })
-        })
-        const data = await res.json()
-        if (res.ok && data.user) {
-          login(data.user)
-        } else {
-          console.error('Admin auto-login failed:', data.error)
-        }
-      } catch (err) {
-        console.error('Admin auto-login error:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
     autoLogin()
   }, [user, login])
 
@@ -53,7 +55,17 @@ export default function AutoLoginAdmin({ children }) {
   }
 
   if (!user || user.role !== 'admin') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem', color: 'red' }}>Admin access failed.</div>
+    return (
+      <div style={{ textAlign: 'center', marginTop: '4rem', padding: '0 1rem' }}>
+        <p style={{ color: '#e53935', marginBottom: '1rem' }}>{error || 'Admin access failed.'}</p>
+        <button
+          onClick={autoLogin}
+          style={{ padding: '0.6rem 1.5rem', background: '#234997', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          Retry
+        </button>
+      </div>
+    )
   }
 
   return children
