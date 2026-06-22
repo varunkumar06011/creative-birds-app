@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import Navbar from './components/Navbar'
+import ProtectedRoute from './components/ProtectedRoute'
 import AutoLoginAdmin from './components/AutoLoginAdmin'
 import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
@@ -31,15 +32,15 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/customer" element={<CustomerHome />} />
-            <Route path="/customer/request" element={<CustomerRequest />} />
-            <Route path="/customer/packages" element={<CustomerPackages />} />
-            <Route path="/customer/tracking" element={<CustomerTracking />} />
-            <Route path="/customer/complaint" element={<CustomerComplaint />} />
-            <Route path="/designer" element={<DesignerHome />} />
-            <Route path="/designer/onboarding" element={<DesignerOnboarding />} />
-            <Route path="/designer/jobs" element={<DesignerJobs />} />
-            <Route path="/designer/earnings" element={<DesignerEarnings />} />
+            <Route path="/customer" element={<ProtectedRoute allowedRoles={['customer']}><CustomerHome /></ProtectedRoute>} />
+            <Route path="/customer/request" element={<ProtectedRoute allowedRoles={['customer']}><CustomerRequest /></ProtectedRoute>} />
+            <Route path="/customer/packages" element={<ProtectedRoute allowedRoles={['customer']}><CustomerPackages /></ProtectedRoute>} />
+            <Route path="/customer/tracking" element={<ProtectedRoute allowedRoles={['customer']}><CustomerTracking /></ProtectedRoute>} />
+            <Route path="/customer/complaint" element={<ProtectedRoute allowedRoles={['customer']}><CustomerComplaint /></ProtectedRoute>} />
+            <Route path="/designer" element={<ProtectedRoute allowedRoles={['designer']}><DesignerHome /></ProtectedRoute>} />
+            <Route path="/designer/onboarding" element={<ProtectedRoute allowedRoles={['designer']}><DesignerOnboarding /></ProtectedRoute>} />
+            <Route path="/designer/jobs" element={<ProtectedRoute allowedRoles={['designer']}><DesignerJobs /></ProtectedRoute>} />
+            <Route path="/designer/earnings" element={<ProtectedRoute allowedRoles={['designer']}><DesignerEarnings /></ProtectedRoute>} />
             <Route path="/admin" element={<AutoLoginAdmin><AdminDashboard /></AutoLoginAdmin>} />
             <Route path="/admin/users" element={<AutoLoginAdmin><AdminUsers /></AutoLoginAdmin>} />
             <Route path="/admin/transactions" element={<AutoLoginAdmin><AdminTransactions /></AutoLoginAdmin>} />

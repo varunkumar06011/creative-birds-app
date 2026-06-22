@@ -31,10 +31,6 @@ export default function DesignerHome() {
     }
   }
 
-  if (!user || user.role !== 'designer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a designer.</div>
-  }
-
   if (!user.onboardingComplete) {
     return (
       <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>

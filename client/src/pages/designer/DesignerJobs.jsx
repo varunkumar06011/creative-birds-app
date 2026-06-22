@@ -99,10 +99,6 @@ export default function DesignerJobs() {
     }
   }
 
-  if (!user || user.role !== 'designer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a designer.</div>
-  }
-
   if (!isOnline) {
     return (
       <div style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>

@@ -64,10 +64,6 @@ export default function CustomerRequest() {
     navigate('/customer/packages')
   }
 
-  if (!user || user.role !== 'customer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a customer.</div>
-  }
-
   return (
     <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto' }}>
       <h2 style={{ color: '#234997', fontSize: '1.3rem' }}>New Design Request</h2>

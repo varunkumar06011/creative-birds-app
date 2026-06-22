@@ -12,10 +12,6 @@ export default function DesignerEarnings() {
       .then(data => setPayouts(data.filter(p => p.designerId === user.id)))
   }, [user])
 
-  if (!user || user.role !== 'designer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a designer.</div>
-  }
-
   return (
     <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
       <h2 style={{ color: '#234997' }}>Earnings & Payouts</h2>

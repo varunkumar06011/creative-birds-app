@@ -11,10 +11,6 @@ export default function AdminTransactions() {
       .then(data => setTransactions(data))
   }, [])
 
-  if (!user || user.role !== 'admin') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as admin.</div>
-  }
-
   return (
     <div style={{ padding: '2rem', maxWidth: '1100px', margin: '0 auto' }}>
       <h2 style={{ color: '#234997' }}>Transactions</h2>

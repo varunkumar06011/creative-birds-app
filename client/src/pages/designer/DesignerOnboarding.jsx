@@ -34,10 +34,6 @@ export default function DesignerOnboarding() {
     }
   }
 
-  if (!user || user.role !== 'designer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a designer.</div>
-  }
-
   return (
     <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
       <h2 style={{ color: '#234997' }}>Designer Onboarding</h2>

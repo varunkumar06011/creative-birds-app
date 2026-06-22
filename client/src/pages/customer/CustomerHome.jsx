@@ -20,10 +20,6 @@ export default function CustomerHome() {
       .then(data => setRecentJobs(data.slice(0, 3)))
   }, [user])
 
-  if (!user || user.role !== 'customer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a customer.</div>
-  }
-
   const statusColors = {
     pending: '#ff9800',
     assigned: '#234997',

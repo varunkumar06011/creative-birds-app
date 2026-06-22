@@ -99,10 +99,6 @@ export default function CustomerPackages() {
     }
   }
 
-  if (!user || user.role !== 'customer') {
-    return <div style={{ textAlign: 'center', marginTop: '4rem' }}>Please login as a customer.</div>
-  }
-
   if (activeJob) {
     const isAssigned = activeJob.status === 'assigned'
     const isCompleted = activeJob.status === 'completed'
