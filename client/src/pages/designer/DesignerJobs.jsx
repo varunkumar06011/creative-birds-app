@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useSocket } from '../../context/SocketContext'
+import DesignerAlert from './DesignerAlert'
 
 export default function DesignerJobs() {
   const [jobs, setJobs] = useState([])
   const [myJobs, setMyJobs] = useState([])
   const [viewedJobs, setViewedJobs] = useState(new Set())
+  const [alertJob, setAlertJob] = useState(null)
   const { user } = useAuth()
   const socket = useSocket()
 
@@ -27,16 +29,23 @@ export default function DesignerJobs() {
     if (!socket || !isOnline) return
     socket.on('newJob', (job) => {
       setJobs(prev => [job, ...prev])
+      setAlertJob(job)
     })
     socket.on('jobAssigned', (job) => {
       setJobs(prev => prev.filter(j => j.id !== job.id))
+      setAlertJob(prev => (prev?.id === job.id ? null : prev))
       if (job.designerId === user?.id) {
         setMyJobs(prev => [job, ...prev])
       }
     })
+    socket.on('stopAlert', ({ jobId }) => {
+      setAlertJob(prev => (prev?.id === jobId ? null : prev))
+      setJobs(prev => prev.filter(j => j.id !== jobId))
+    })
     return () => {
       socket.off('newJob')
       socket.off('jobAssigned')
+      socket.off('stopAlert')
     }
   }, [socket, user, isOnline])
 
@@ -56,6 +65,7 @@ export default function DesignerJobs() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to accept job')
       setJobs(prev => prev.filter(j => j.id !== jobId))
+      setAlertJob(prev => (prev?.id === jobId ? null : prev))
       setMyJobs(prev => [data.job, ...prev])
       alert(`Job accepted! Meet Link: ${data.job.meetLink}\nCustomer OTP: ${data.job.otp}`)
     } catch (err) {
@@ -67,6 +77,14 @@ export default function DesignerJobs() {
     if (!socket || !user) return
     socket.emit('rejectJob', { jobId, designerId: user.id })
     setJobs(prev => prev.filter(j => j.id !== jobId))
+    setAlertJob(prev => (prev?.id === jobId ? null : prev))
+  }
+
+  const expireJob = (jobId) => {
+    if (!socket || !user) return
+    socket.emit('rejectJob', { jobId, designerId: user.id })
+    setJobs(prev => prev.filter(j => j.id !== jobId))
+    setAlertJob(prev => (prev?.id === jobId ? null : prev))
   }
 
   const completeJob = async (jobId) => {
@@ -96,6 +114,15 @@ export default function DesignerJobs() {
 
   return (
     <div style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
+      {alertJob && (
+        <DesignerAlert
+          job={alertJob}
+          onAccept={() => acceptJob(alertJob.id)}
+          onReject={() => rejectJob(alertJob.id)}
+          onExpire={() => expireJob(alertJob.id)}
+        />
+      )}
+
       <h2 style={{ color: '#234997' }}>Available Jobs</h2>
       {jobs.length === 0 && <p>No available jobs right now.</p>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>

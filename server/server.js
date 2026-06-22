@@ -195,6 +195,16 @@ app.post('/api/jobs', (req, res) => {
   status.totalNotified = onlineIds.length
   io.emit('jobStatusUpdate', { jobId: job.id, ...status })
 
+  // Auto-expire job after 60 seconds if not assigned
+  setTimeout(() => {
+    const j = DB.jobs.find(x => x.id === job.id)
+    if (j && j.status === 'pending') {
+      j.status = 'expired'
+      io.emit('jobExpired', { jobId: job.id })
+      io.emit('stopAlert', { jobId: job.id })
+    }
+  }, 60000)
+
   res.json({ job, transaction: tx, status })
 })
 
@@ -284,6 +294,7 @@ app.post('/api/jobs/:id/accept', (req, res) => {
   }
 
   io.emit('jobAssigned', job)
+  io.emit('stopAlert', { jobId: job.id })
   res.json({ job })
 })
 

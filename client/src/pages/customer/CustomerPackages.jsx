@@ -37,10 +37,16 @@ export default function CustomerPackages() {
         setActiveJob(prev => ({ ...prev, tip, finalPrice }))
       }
     })
+    socket.on('jobExpired', ({ jobId }) => {
+      if (jobId === activeJob.id) {
+        setActiveJob(prev => ({ ...prev, status: 'expired' }))
+      }
+    })
     return () => {
       socket.off('jobStatusUpdate')
       socket.off('jobAssigned')
       socket.off('jobTipAdded')
+      socket.off('jobExpired')
     }
   }, [socket, activeJob])
 
@@ -100,10 +106,13 @@ export default function CustomerPackages() {
   if (activeJob) {
     const isAssigned = activeJob.status === 'assigned'
     const isCompleted = activeJob.status === 'completed'
+    const isExpired = activeJob.status === 'expired'
 
     return (
       <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-        <h2 style={{ color: '#234997', textAlign: 'center' }}>Finding Designer...</h2>
+        <h2 style={{ color: '#234997', textAlign: 'center' }}>
+          {isExpired ? 'Request Expired' : isAssigned ? 'Designer Found!' : 'Finding Designer...'}
+        </h2>
 
         <div style={{ background: '#f0f4ff', padding: '1rem', borderRadius: '12px', marginBottom: '1rem' }}>
           <p style={{ margin: 0, fontWeight: 'bold' }}>{activeJob.packageName}</p>
@@ -111,7 +120,17 @@ export default function CustomerPackages() {
           {activeJob.tip > 0 && <p style={{ margin: '0.2rem 0 0', color: '#28a745', fontSize: '0.85rem' }}>Includes ₹{activeJob.tip} tip</p>}
         </div>
 
-        {!isAssigned && !isCompleted && (
+        {isExpired && (
+          <div style={{ background: '#ffebee', padding: '1.2rem', borderRadius: '8px', textAlign: 'center', marginBottom: '1rem' }}>
+            <p style={{ margin: 0, color: '#e53935', fontWeight: 'bold', fontSize: '1.1rem' }}>No designer accepted</p>
+            <p style={{ margin: '0.5rem 0 0', color: '#666', fontSize: '0.9rem' }}>Your request expired. Try increasing the amount or posting again.</p>
+            <button onClick={() => setActiveJob(null)} style={{ marginTop: '1rem', padding: '0.6rem 1.5rem', background: '#234997', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+              Post New Request
+            </button>
+          </div>
+        )}
+
+        {!isAssigned && !isCompleted && !isExpired && (
           <>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '1rem' }}>
               <div style={{ background: '#fff', padding: '0.8rem', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>

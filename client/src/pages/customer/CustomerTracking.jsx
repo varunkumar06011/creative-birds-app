@@ -45,7 +45,8 @@ export default function CustomerTracking() {
   const statusColors = {
     pending: '#ff9800',
     assigned: '#234997',
-    completed: '#28a745'
+    completed: '#28a745',
+    expired: '#e53935'
   }
 
   return (
