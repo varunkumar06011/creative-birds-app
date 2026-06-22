@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import Navbar from './components/Navbar'
 import AutoLoginAdmin from './components/AutoLoginAdmin'
+import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import CustomerHome from './pages/customer/CustomerHome'
@@ -27,7 +28,8 @@ function App() {
         <SocketProvider>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/customer" element={<CustomerHome />} />
             <Route path="/customer/request" element={<CustomerRequest />} />
