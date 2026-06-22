@@ -25,6 +25,25 @@ const DB = {
 
 const onlineSockets = new Map()
 
+// Seed default admin
+const seedAdmin = () => {
+  const existing = DB.users.find(u => u.email === 'vijay@creativebirds.com')
+  if (!existing) {
+    const admin = {
+      id: uuidv4(),
+      name: 'vijay',
+      email: 'vijay@creativebirds.com',
+      password: 'vijay123',
+      role: 'admin',
+      phone: '9999999999',
+      createdAt: new Date().toISOString()
+    }
+    DB.users.push(admin)
+    console.log('Default admin seeded: vijay / vijay123')
+  }
+}
+seedAdmin()
+
 const PACKAGES = [
   { id: 'pkg1', name: 'Quick Design', hours: 1, price: 1000 },
   { id: 'pkg2', name: 'Standard Design', hours: 2, price: 2000 },
@@ -75,6 +94,7 @@ app.get('/api/packages', (req, res) => {
 
 app.post('/api/auth/register', (req, res) => {
   const { name, email, password, role, phone } = req.body
+  if (role === 'admin') return res.status(403).json({ error: 'Admin registration is not allowed' })
   const existing = DB.users.find(u => u.email === email)
   if (existing) return res.status(400).json({ error: 'Email already exists' })
 

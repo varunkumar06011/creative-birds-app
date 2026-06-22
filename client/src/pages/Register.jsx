@@ -24,8 +24,7 @@ export default function Register() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Registration failed')
       login(data.user)
-      if (role === 'admin') navigate('/admin')
-      else if (role === 'designer') navigate('/designer/onboarding')
+      if (role === 'designer') navigate('/designer/onboarding')
       else navigate('/customer')
     } catch (err) {
       setError(err.message)
@@ -59,7 +58,6 @@ export default function Register() {
           <select value={role} onChange={e => setRole(e.target.value)} style={{ width: '100%', padding: '0.5rem', marginTop: '0.3rem' }}>
             <option value="customer">Customer</option>
             <option value="designer">Designer</option>
-            <option value="admin">Admin</option>
           </select>
         </div>
         <button type="submit" style={{ width: '100%', padding: '0.7rem', background: '#234997', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>

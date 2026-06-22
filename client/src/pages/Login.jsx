@@ -21,9 +21,9 @@ export default function Login() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Login failed')
       login(data.user)
-      if (data.user.role === 'admin') navigate('/admin')
-      else if (data.user.role === 'designer') navigate('/designer')
-      else navigate('/customer')
+      if (data.user.role === 'designer') navigate('/designer')
+      else if (data.user.role === 'customer') navigate('/customer')
+      else setError('Please use /admin URL for admin access')
     } catch (err) {
       setError(err.message)
     }

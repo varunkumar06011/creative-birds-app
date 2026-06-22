@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import Navbar from './components/Navbar'
+import AutoLoginAdmin from './components/AutoLoginAdmin'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import CustomerHome from './pages/customer/CustomerHome'
@@ -37,11 +38,11 @@ function App() {
             <Route path="/designer/onboarding" element={<DesignerOnboarding />} />
             <Route path="/designer/jobs" element={<DesignerJobs />} />
             <Route path="/designer/earnings" element={<DesignerEarnings />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/transactions" element={<AdminTransactions />} />
-            <Route path="/admin/complaints" element={<AdminComplaints />} />
-            <Route path="/admin/payouts" element={<AdminPayouts />} />
+            <Route path="/admin" element={<AutoLoginAdmin><AdminDashboard /></AutoLoginAdmin>} />
+            <Route path="/admin/users" element={<AutoLoginAdmin><AdminUsers /></AutoLoginAdmin>} />
+            <Route path="/admin/transactions" element={<AutoLoginAdmin><AdminTransactions /></AutoLoginAdmin>} />
+            <Route path="/admin/complaints" element={<AutoLoginAdmin><AdminComplaints /></AutoLoginAdmin>} />
+            <Route path="/admin/payouts" element={<AutoLoginAdmin><AdminPayouts /></AutoLoginAdmin>} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </SocketProvider>
