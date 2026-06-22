@@ -50,7 +50,7 @@ export default function CustomerTracking() {
   }
 
   return (
-    <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+    <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto' }}>
       <h2 style={{ color: '#234997', fontSize: '1.2rem' }}>My Jobs</h2>
       {jobs.length === 0 && <p style={{ textAlign: 'center', color: '#666', marginTop: '3rem' }}>No jobs yet.</p>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '0.8rem' }}>

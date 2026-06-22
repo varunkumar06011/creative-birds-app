@@ -109,7 +109,7 @@ export default function CustomerPackages() {
     const isExpired = activeJob.status === 'expired'
 
     return (
-      <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto' }}>
         <h2 style={{ color: '#234997', textAlign: 'center' }}>
           {isExpired ? 'Request Expired' : isAssigned ? 'Designer Found!' : 'Finding Designer...'}
         </h2>

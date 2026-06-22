@@ -32,7 +32,7 @@ export default function CustomerHome() {
   }
 
   return (
-    <div style={{ fontFamily: 'sans-serif', maxWidth: '480px', margin: '0 auto', paddingBottom: '2rem' }}>
+    <div style={{ maxWidth: '480px', margin: '0 auto', paddingBottom: '2rem' }}>
       {/* Header Hero */}
       <div style={{
         background: 'linear-gradient(135deg, #234997 0%, #3b6fd8 100%)',

@@ -69,7 +69,7 @@ export default function CustomerRequest() {
   }
 
   return (
-    <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+    <div style={{ padding: '1rem', maxWidth: '480px', margin: '0 auto' }}>
       <h2 style={{ color: '#234997', fontSize: '1.3rem' }}>New Design Request</h2>
 
       <div style={{ marginBottom: '1rem' }}>

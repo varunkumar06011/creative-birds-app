@@ -3,6 +3,8 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import cors from 'cors'
 import { v4 as uuidv4 } from 'uuid'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 
 const app = express()
 const httpServer = createServer(app)
@@ -492,11 +494,17 @@ io.on('connection', (socket) => {
   })
 })
 
-export { app }
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-if (!process.env.VERCEL) {
-  const PORT = process.env.PORT || 5000
-  httpServer.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-  })
-}
+const distPath = join(__dirname, '../client/dist')
+app.use(express.static(distPath))
+
+app.get('*', (req, res) => {
+  res.sendFile(join(distPath, 'index.html'))
+})
+
+const PORT = process.env.PORT || 5000
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})

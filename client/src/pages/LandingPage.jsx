@@ -28,7 +28,7 @@ export default function LandingPage() {
   }, [user, navigate])
 
   return (
-    <div style={{ fontFamily: 'sans-serif' }}>
+    <div>
       {/* Hero */}
       <div style={{
         background: 'linear-gradient(135deg, #234997 0%, #3b6fd8 100%)',
