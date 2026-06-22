@@ -492,7 +492,11 @@ io.on('connection', (socket) => {
   })
 })
 
-const PORT = process.env.PORT || 5000
-httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+export { app }
+
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000
+  httpServer.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
